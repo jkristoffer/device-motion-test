@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Hello From The Client Side</title>
+	<style>
+		html, body { height: 100%; width: 100%; }
+		#playfield {
+			border: 3px solid #AAA;
+			display: block;
+			height: 400px;
+			width: 400px;
+		}
+	</style>
+
+
+</head>
+<body>
+	<div id="app">	
+		<button onclick="reset()">Reset</button>
+
+		<canvas width="200" height="200" id="playfield"></canvas>
+	</div>	
+	<script type="text/javascript">
+		var socket = new WebSocket("ws://10.4.1.28:4002"),
+			player1 = [0,0],
+			player1_v = [0,0];
+
+		socket.onmessage = function(data){
+			data = JSON.parse(data.data);
+			console.log(data);
+			player1_v = data.player1_v;
+		};
+
+		window.requestAnimationFrame(loop);
+		function loop(){
+			player1[0] += parseFloat(player1_v[0]).toFixed(1) * .5;
+			player1[1] += parseFloat(player1_v[1]).toFixed(1) * -.5;
+			if (player1[0] <= 0) player1[0] = 0;
+			if (player1[0] >= 190) player1[0] = 190;
+			if (player1[1] >= 190) player1[1] = 190;
+			if (player1[1] <= 0) player1[1] = 0;
+
+			var canvas = document.getElementById("playfield"), 
+				ctx = canvas.getContext("2d");
+
+			ctx.clearRect(0,0,200,200);
+			ctx.fillStyle = "red"; 
+			ctx.fillRect(player1[0], player1[1], 10, 10);
+			//ctx.translate(100,100);
+			
+		  	window.requestAnimationFrame(loop);
+		}
+
+		function reset(){
+			var canvas = document.getElementById("playfield"), 
+				ctx = canvas.getContext("2d");
+
+			ctx.clearRect(0,0,200,200);
+		}
+	</script>
+</body>
+</html>
