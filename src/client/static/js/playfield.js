@@ -3,24 +3,59 @@ module.exports = {
 		var cycleLimit = 1, cycleCounter = 0;
 
 		var acc = {
-			absolute: {
-				x:0,y:0,z:0
-			},
-			calibrated: {
-				x:0,y:0,z:0
-			},
-			offset: {
-				x:0,y:0,z:0
-			}
+				absolute: {
+					x:0,y:0,z:0
+				},
+				calibrated: {
+					x:0,y:0,z:0
+				},
+				offset: {
+					x:0,y:0,z:0
+				},
+				center: {
+					x:0,y:0,z:0
+				},
+				top: {
+					x:0,y:0,z:0
+				},
+				right: {
+					x:0,y:0,z:0
+				},
+				bottom: {
+					x:0,y:0,z:0
+				},
+				left: {
+					x:0,y:0,z:0
+				}
 			},
 			el_x = document.getElementById('x'),
 			el_y = document.getElementById('y'),
 			el_z = document.getElementById('z');
+			ctr = 0;
 
-		function callibrate(){
-			acc.calibrated.x = acc.absolute.x;
-			acc.calibrated.y = acc.absolute.y;
-			acc.calibrated.z = acc.absolute.z;
+		document.getElementById('callibrate').onclick = function callibrate(){
+			if (ctr === 0) {
+				acc.center.x = acc.absolute.x;
+				acc.center.y = acc.absolute.y;
+				acc.center.z = acc.absolute.z;
+			} else if (ctr === 1){
+				acc.top.x = acc.absolute.x;
+				acc.top.y = acc.absolute.y;
+				acc.top.z = acc.absolute.z;
+			} else if (ctr === 2){
+				acc.right.x = acc.absolute.x;
+				acc.right.y = acc.absolute.y;
+				acc.right.z = acc.absolute.z;
+			} else if (ctr === 3){
+				acc.bottom.x = acc.absolute.x;
+				acc.bottom.y = acc.absolute.y;
+				acc.bottom.z = acc.absolute.z;
+			} else if (ctr === 4){
+				acc.left.x = acc.absolute.x;
+				acc.left.y = acc.absolute.y;
+				acc.left.z = acc.absolute.z;
+			}
+			ctr++;
 		}
 
 		function handleMotionEvent(event) {
@@ -40,7 +75,8 @@ module.exports = {
 		    cycleCounter = cycleCounter + 1;
 		    if (cycleCounter > cycleLimit) {
 		    	cycleCounter = 0;
-		    	socket.send(JSON.stringify({ player1_v: [el_x.innerHTML, el_y.innerHTML]}));
+		    	document.getElementById('log').innerHTML = ctr;
+		    	socket.send(JSON.stringify(acc));
 		    }
 		}
 
