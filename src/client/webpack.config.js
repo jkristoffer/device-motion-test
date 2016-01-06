@@ -2,7 +2,7 @@ var path = require("path");
 
 module.exports = {
   entry: {
-    app: ["./static/js/entry.js"]
+    app: path.resolve(__dirname, "./static/js/entry.js")
   },
   output: {
     path: path.resolve(__dirname, "build"),
