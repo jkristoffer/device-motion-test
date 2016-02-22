@@ -24,9 +24,9 @@ module.exports = {
 		}
 
 		function handleMotionEvent(event) {
-		    var _x = event.accelerationIncludingGravity.x,
-		    	_y = event.accelerationIncludingGravity.y,
-		    	_z = event.accelerationIncludingGravity.z;
+		    var _x = parseFloat(event.accelerationIncludingGravity.x).toFixed(0),
+		    	_y = parseFloat(event.accelerationIncludingGravity.y).toFixed(0),
+		    	_z = parseFloat(event.accelerationIncludingGravity.z).toFixed(0);
 		    acc.absolute.x = _x; acc.absolute.y = _y; acc.absolute.z = _z;
 
 		    acc.offset.x = acc.absolute.x - acc.calibrated.x;
